@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contents\Commands\" />
-    <Folder Include="Contents\DTOs\" />
-    <Folder Include="Contents\Queries\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
   </ItemGroup>
