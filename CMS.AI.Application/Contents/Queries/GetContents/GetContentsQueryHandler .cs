@@ -1,4 +1,8 @@
-﻿using CMS.AI.Application.Common.Interfaces;
+﻿using AutoMapper;
+using CMS.AI.Application.Common.Interfaces;
+using CMS.AI.Application.Contents.DTOs;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

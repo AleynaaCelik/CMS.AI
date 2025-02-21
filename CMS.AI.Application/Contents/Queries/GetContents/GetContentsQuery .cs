@@ -1,4 +1,6 @@
-﻿using CMS.AI.Domain.Entities;
+﻿using CMS.AI.Application.Contents.DTOs;
+using CMS.AI.Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
