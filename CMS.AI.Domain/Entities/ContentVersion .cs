@@ -9,9 +9,22 @@ namespace CMS.AI.Domain.Entities
 {
     public class ContentVersion : BaseEntity
     {
-        public Guid ContentId { get; set; }
-        public int Version { get; set; }
-        public string Content { get; set; }
-        public Content BaseContent { get; set; }
+        public Guid ContentId { get; private set; }
+        public int Version { get; private set; }
+        public string Content { get; private set; }
+        public Content BaseContent { get; private set; }
+
+        public ContentVersion(Guid contentId, int version, string content, string createdBy)
+        {
+            Id = Guid.NewGuid();
+            ContentId = contentId;
+            Version = version;
+            Content = content;
+            CreatedAt = DateTime.UtcNow;
+            CreatedBy = createdBy;
+        }
+
+        // For EF Core
+        private ContentVersion() { }
     }
 }
