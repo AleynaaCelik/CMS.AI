@@ -1,5 +1,6 @@
 ﻿using CMS.AI.Application.Common.Interfaces;
 using CMS.AI.Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
