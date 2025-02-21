@@ -14,7 +14,9 @@ namespace CMS.AI.Application.Contents.Commands.CreateContent
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUserService;
 
-        public CreateContentCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
+        public CreateContentCommandHandler(
+            IApplicationDbContext context,
+            ICurrentUserService currentUserService)
         {
             _context = context;
             _currentUserService = currentUserService;
@@ -22,11 +24,10 @@ namespace CMS.AI.Application.Contents.Commands.CreateContent
 
         public async Task<Guid> Handle(CreateContentCommand request, CancellationToken cancellationToken)
         {
-            var entity = Content.Create(
+            var entity = new Content(
                 request.Title,
                 request.Body,
-                _currentUserService.UserId
-            );
+                _currentUserService.UserId);
 
             _context.Contents.Add(entity);
 

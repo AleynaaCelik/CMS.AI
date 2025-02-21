@@ -9,11 +9,29 @@ namespace CMS.AI.Domain.Entities
 {
     public class ContentMeta : BaseEntity
     {
-        public Guid ContentId { get; set; }
-        public string Language { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
-        public Content Content { get; set; }
+        public Guid ContentId { get; private set; }
+        public string Language { get; private set; }
+        public string Key { get; private set; }
+        public string Value { get; private set; }
+        public Content Content { get; private set; }
+
+        private ContentMeta()
+        {
+            Language = string.Empty;
+            Key = string.Empty;
+            Value = string.Empty;
+        }
+
+        public ContentMeta(Guid contentId, string language, string key, string value, string createdBy)
+        {
+            Id = Guid.NewGuid();
+            ContentId = contentId;
+            Language = language;
+            Key = key;
+            Value = value;
+            CreatedAt = DateTime.UtcNow;
+            CreatedBy = createdBy;
+        }
     }
 
 }

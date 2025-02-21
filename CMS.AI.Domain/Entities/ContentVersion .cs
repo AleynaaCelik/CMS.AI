@@ -14,6 +14,11 @@ namespace CMS.AI.Domain.Entities
         public string Content { get; private set; }
         public Content BaseContent { get; private set; }
 
+        private ContentVersion()
+        {
+            Content = string.Empty;
+        }
+
         public ContentVersion(Guid contentId, int version, string content, string createdBy)
         {
             Id = Guid.NewGuid();
@@ -23,8 +28,5 @@ namespace CMS.AI.Domain.Entities
             CreatedAt = DateTime.UtcNow;
             CreatedBy = createdBy;
         }
-
-        // For EF Core
-        private ContentVersion() { }
     }
 }

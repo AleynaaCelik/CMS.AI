@@ -8,18 +8,29 @@ using System.Threading.Tasks;
 
 namespace CMS.AI.Domain.Entities
 {
-    public class Content : BaseEntity, IAggregateRoot
+    public class Content : BaseEntity
     {
+        private readonly List<ContentMeta> _metaData;
+        private readonly List<ContentVersion> _versions;
+
         public string Title { get; private set; }
         public string Slug { get; private set; }
         public string Body { get; private set; }
         public ContentStatus Status { get; private set; }
         public int Version { get; private set; }
-        private readonly List<ContentMeta> _metaData;
-        private readonly List<ContentVersion> _versions;
 
         public IReadOnlyCollection<ContentMeta> MetaData => _metaData.AsReadOnly();
         public IReadOnlyCollection<ContentVersion> Versions => _versions.AsReadOnly();
+
+        // Private constructor for EF Core
+        private Content()
+        {
+            _metaData = new List<ContentMeta>();
+            _versions = new List<ContentVersion>();
+            Title = string.Empty;
+            Slug = string.Empty;
+            Body = string.Empty;
+        }
 
         public Content(string title, string body, string createdBy)
         {
@@ -31,17 +42,11 @@ namespace CMS.AI.Domain.Entities
             Version = 1;
             CreatedAt = DateTime.UtcNow;
             CreatedBy = createdBy;
+
             _metaData = new List<ContentMeta>();
             _versions = new List<ContentVersion>();
 
             AddVersion(Version, body, createdBy);
-        }
-
-        // For EF Core
-        private Content()
-        {
-            _metaData = new List<ContentMeta>();
-            _versions = new List<ContentVersion>();
         }
 
         public void Update(string title, string body, string modifiedBy)
@@ -67,6 +72,12 @@ namespace CMS.AI.Domain.Entities
             return title.ToLower()
                        .Replace(" ", "-")
                        .Replace(System.Text.RegularExpressions.Regex.Replace(title, "[^a-zA-Z0-9 ]", ""), "");
+        }
+
+        public void AddMetaData(string language, string key, string value, string createdBy)
+        {
+            var meta = new ContentMeta(Id, language, key, value, createdBy);
+            _metaData.Add(meta);
         }
     }
 
