@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.AI.Infrastructure", "CMS.AI.Infrastructure\CMS.AI.Infrastructure.csproj", "{4020803B-7494-4786-A9A1-E3A2DA1B69E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.AI.Infrastructure.Shared", "CMS.AI.Infrastructure.Shared\CMS.AI.Infrastructure.Shared.csproj", "{7EBC72D8-7FEB-4227-95C6-FAB10DB1E179}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4020803B-7494-4786-A9A1-E3A2DA1B69E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4020803B-7494-4786-A9A1-E3A2DA1B69E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4020803B-7494-4786-A9A1-E3A2DA1B69E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBC72D8-7FEB-4227-95C6-FAB10DB1E179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBC72D8-7FEB-4227-95C6-FAB10DB1E179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EBC72D8-7FEB-4227-95C6-FAB10DB1E179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBC72D8-7FEB-4227-95C6-FAB10DB1E179}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,5 +49,6 @@ Global
 		{5F4DAE05-079C-4890-A571-36D98A0B6CEC} = {9900F239-F81A-4547-BD01-FF194CA9E6A7}
 		{EC4F7B1B-CFC3-477F-B4C3-175AF2C062F3} = {95C6F556-A53B-4533-979F-516A54F92261}
 		{4020803B-7494-4786-A9A1-E3A2DA1B69E4} = {EC4F7B1B-CFC3-477F-B4C3-175AF2C062F3}
+		{7EBC72D8-7FEB-4227-95C6-FAB10DB1E179} = {EC4F7B1B-CFC3-477F-B4C3-175AF2C062F3}
 	EndGlobalSection
 EndGlobal
