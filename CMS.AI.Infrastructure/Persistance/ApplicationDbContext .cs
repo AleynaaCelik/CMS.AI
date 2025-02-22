@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CMS.AI.Application.Common.Interfaces;
+using CMS.AI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,18 +12,25 @@ namespace CMS.AI.Infrastructure.Persistance
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
 
-        public DbSet<Content> Contents => Set<Content>();
-        public DbSet<ContentMeta> ContentMetas => Set<ContentMeta>();
-        public DbSet<ContentVersion> ContentVersions => Set<ContentVersion>();
+        public DbSet<Content> Contents { get; set; } = null!;
+        public DbSet<ContentMeta> ContentMetas { get; set; } = null!;
+        public DbSet<ContentVersion> ContentVersions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             base.OnModelCreating(builder);
         }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
     }
+
 }
