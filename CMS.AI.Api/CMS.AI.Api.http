@@ -1,0 +1,6 @@
+@CMS.AI.Api_HostAddress = http://localhost:5264
+
+GET {{CMS.AI.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
