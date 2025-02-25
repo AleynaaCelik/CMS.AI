@@ -11,7 +11,7 @@ namespace CMS.AI.Application.Contents.Queries.GetContents
 {
     public class GetContentsQuery : IRequest<IEnumerable<ContentDto>>
     {
-        public string SearchTerm { get; set; }
-        public ContentStatus? Status { get; set; }
+        public string? SearchTerm { get; init; }
+        public ContentStatus? Status { get; init; }
     }
 }
