@@ -1,5 +1,6 @@
 ﻿using CMS.AI.Application.Common.Interfaces;
 using CMS.AI.Infrastructure.Persistance;
+using CMS.AI.Infrastructure.Repositories;
 using CMS.AI.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,12 +22,17 @@ namespace CMS.AI.Infrastructure
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")));
+                    configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext>(provider =>
                 provider.GetRequiredService<ApplicationDbContext>());
 
-            services.AddTransient<IDateTime, DateTimeService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Registry for basic services
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IDateTime, DateTimeService>();
 
             return services;
         }
