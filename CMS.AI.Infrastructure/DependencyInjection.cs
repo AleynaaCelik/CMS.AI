@@ -20,6 +20,7 @@ namespace CMS.AI.Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            // Database
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
@@ -28,10 +29,20 @@ namespace CMS.AI.Infrastructure
             services.AddScoped<IApplicationDbContext>(provider =>
                 provider.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // Redis Cache
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+                options.InstanceName = "CMS.AI:";
+            });
 
-            // Registry for basic services
+            services.AddSingleton<ICacheService, RedisCacheService>();
+
+            // Repositories
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            // Core services
             services.AddScoped<IDateTime, DateTimeService>();
 
             return services;
