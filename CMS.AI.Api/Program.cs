@@ -26,6 +26,7 @@ builder.Services.AddCors(options => {
     });
 });
 
+
 // Add application & infrastructure services
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
