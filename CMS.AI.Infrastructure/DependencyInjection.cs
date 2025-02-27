@@ -1,4 +1,5 @@
 ﻿using CMS.AI.Application.Common.Interfaces;
+using CMS.AI.Domain.Entities;
 using CMS.AI.Infrastructure.Persistance;
 using CMS.AI.Infrastructure.Repositories;
 using CMS.AI.Infrastructure.Services;
@@ -38,6 +39,12 @@ namespace CMS.AI.Infrastructure
 
             services.AddSingleton<ICacheService, RedisCacheService>();
 
+            // OpenAI
+            services.AddHttpClient<IAIService, OpenAIService>();
+
+            // Elasticsearch
+            services.AddSingleton<ISearchService<Content>, ElasticsearchService<Content>>();
+
             // Repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -47,6 +54,6 @@ namespace CMS.AI.Infrastructure
 
             return services;
         }
-    }
 
+    }
 }
