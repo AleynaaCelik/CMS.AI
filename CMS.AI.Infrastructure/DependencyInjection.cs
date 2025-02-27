@@ -18,8 +18,8 @@ namespace CMS.AI.Infrastructure
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(
-            this IServiceCollection services,
-            IConfiguration configuration)
+             this IServiceCollection services,
+             IConfiguration configuration)
         {
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -39,11 +39,13 @@ namespace CMS.AI.Infrastructure
 
             services.AddSingleton<ICacheService, RedisCacheService>();
 
-            // OpenAI - HttpClient eklenmiş durumda
+            // HttpClient Factory
             services.AddHttpClient();
+
+            // OpenAI integration
             services.AddScoped<IAIService, OpenAIService>();
 
-            // Elasticsearch - basitleştirilmiş versiyon
+            // Elasticsearch integration
             services.AddScoped<ISearchService<Content>, ElasticsearchService>();
 
             // Repositories
@@ -55,8 +57,7 @@ namespace CMS.AI.Infrastructure
 
             return services;
         }
+
+
     }
-
-
-
 }
