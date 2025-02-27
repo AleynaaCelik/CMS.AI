@@ -39,11 +39,12 @@ namespace CMS.AI.Infrastructure
 
             services.AddSingleton<ICacheService, RedisCacheService>();
 
-            // OpenAI
-            services.AddHttpClient<IAIService, OpenAIService>();
+            // OpenAI - HttpClient eklenmiş durumda
+            services.AddHttpClient();
+            services.AddScoped<IAIService, OpenAIService>();
 
-            // Elasticsearch
-            services.AddSingleton<ISearchService<Content>, ElasticsearchService<Content>>();
+            // Elasticsearch - basitleştirilmiş versiyon
+            services.AddScoped<ISearchService<Content>, ElasticsearchService>();
 
             // Repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -54,6 +55,8 @@ namespace CMS.AI.Infrastructure
 
             return services;
         }
-
     }
+
+
+
 }
