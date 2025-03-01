@@ -14,12 +14,10 @@ namespace CMS.AI.Application.Contents.Queries.GetContents
     public class GetContentsQueryHandler : IRequestHandler<GetContentsQuery, IEnumerable<ContentDto>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public GetContentsQueryHandler(IApplicationDbContext context, IMapper mapper)
+        public GetContentsQueryHandler(IApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ContentDto>> Handle(GetContentsQuery request, CancellationToken cancellationToken)
@@ -41,7 +39,27 @@ namespace CMS.AI.Application.Contents.Queries.GetContents
 
             var contents = await query.ToListAsync(cancellationToken);
 
-            return _mapper.Map<IEnumerable<ContentDto>>(contents);
+            return contents.Select(c => new ContentDto
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Slug = c.Slug,
+                Body = c.Body,
+                Status = c.Status,
+                Version = c.Version,
+                CreatedAt = c.CreatedAt,
+                CreatedBy = c.CreatedBy,
+                LastModifiedAt = c.LastModifiedAt,
+                LastModifiedBy = c.LastModifiedBy,
+                MetaData = c.MetaData.Select(m => new ContentMetaDto
+                {
+                    Id = m.Id,
+                    ContentId = m.ContentId,
+                    Language = m.Language,
+                    Key = m.Key,
+                    Value = m.Value
+                }).ToList()
+            });
         }
     }
 }

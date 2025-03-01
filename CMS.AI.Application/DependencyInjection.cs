@@ -8,14 +8,9 @@ namespace CMS.AI.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            // MediatR
             services.AddMediatR(cfg => {
-                cfg.RegisterServicesFromAssembly(assembly);
+                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
-
-            // Diğer servisler burada kaydedilebilir
 
             return services;
         }

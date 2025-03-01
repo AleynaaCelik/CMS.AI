@@ -12,14 +12,10 @@ namespace CMS.AI.Application.Contents.Commands.CreateContent
     public class CreateContentCommandHandler : IRequestHandler<CreateContentCommand, Guid>
     {
         private readonly IApplicationDbContext _context;
-        private readonly ICurrentUserService _currentUserService;
 
-        public CreateContentCommandHandler(
-            IApplicationDbContext context,
-            ICurrentUserService currentUserService)
+        public CreateContentCommandHandler(IApplicationDbContext context)
         {
             _context = context;
-            _currentUserService = currentUserService;
         }
 
         public async Task<Guid> Handle(CreateContentCommand request, CancellationToken cancellationToken)
@@ -27,14 +23,15 @@ namespace CMS.AI.Application.Contents.Commands.CreateContent
             var entity = new Content(
                 request.Title,
                 request.Body,
-                _currentUserService.UserId);
+                "admin" // Kullanıcı kimliği için sabit değer kullanıyoruz
+            );
 
             _context.Contents.Add(entity);
-
             await _context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
         }
+
     }
 
 }
