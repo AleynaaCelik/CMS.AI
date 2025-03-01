@@ -106,6 +106,26 @@ namespace CMS.AI.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("{id}/metadata")]
+        public async Task<IActionResult> AddMetadata(Guid id, AddMetadataRequest request, CancellationToken cancellationToken)
+        {
+            var content = await _unitOfWork.Repository<Content>().GetByIdAsync(id);
+            if (content == null)
+            {
+                return NotFound();
+            }
+
+            content.AddMetaData(request.Language, request.Key, request.Value, "admin");
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            // İlgili cache'leri temizle
+            await _cacheService.RemoveAsync($"content_{id}", cancellationToken);
+            await _cacheService.RemoveAsync("all_contents", cancellationToken);
+
+            return NoContent();
+        }
     }
 
     public class CreateContentRequest
@@ -118,6 +138,13 @@ namespace CMS.AI.Api.Controllers
     {
         public string Title { get; set; } = string.Empty;
         public string Body { get; set; } = string.Empty;
+    }
+
+    public class AddMetadataRequest
+    {
+        public string Language { get; set; } = string.Empty;
+        public string Key { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
     }
 }
 
