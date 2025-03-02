@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+var apiKey = Environment.GetEnvironmentVariable("OpenAI_ApiKey");
+
 
 // Add services to the container.
 builder.Services.AddControllers()
