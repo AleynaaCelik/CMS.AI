@@ -3,65 +3,63 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CMS.AI.Infrastructure.Services
 {
     public class OpenAIService : IAIService
     {
-        private readonly IConfiguration _configuration;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
+        private readonly string _apiKey;
+        private readonly string _model;
 
-        public OpenAIService(IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public OpenAIService(HttpClient httpClient, IConfiguration configuration)
         {
-            _configuration = configuration;
-            _httpClientFactory = httpClientFactory;
-        }
+            _httpClient = httpClient;
+            _apiKey = configuration["OpenAI:ApiKey"];
+            _model = configuration["OpenAI:Model"] ?? "gpt-4";
 
-        public async Task<AIContentAnalysisResult> AnalyzeContentAsync(string content, CancellationToken cancellationToken = default)
-        {
-            // Şimdilik OpenAI API çağrısı yapmadan örnek sonuç dönüyoruz
-            return new AIContentAnalysisResult
-            {
-                Title = "Sample Title for " + content.Substring(0, Math.Min(10, content.Length)),
-                Description = "Sample Description for the content provided",
-                Keywords = new List<string> { "sample", "keyword", "test" },
-                ImprovedContent = content,
-                ImagePrompt = "Sample image prompt",
-                SentimentScore = 0.7,
-                Summary = "This is a sample summary of the provided content."
-            };
+            _httpClient.BaseAddress = new Uri("https://api.openai.com/v1/");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
         }
 
         public async Task<string> GenerateSEOTitleAsync(string content, CancellationToken cancellationToken = default)
         {
-            // Örnek bir SEO başlığı döndürüyoruz
-            return "SEO Title: " + content.Substring(0, Math.Min(20, content.Length)) + "...";
+            var prompt = $"Generate an SEO-friendly title (60 characters max) for this content: {content}";
+            return await SendCompletionRequestAsync(prompt, cancellationToken);
         }
 
-        public async Task<string> GenerateSEODescriptionAsync(string content, CancellationToken cancellationToken = default)
-        {
-            // Örnek bir SEO açıklaması döndürüyoruz
-            return "SEO Description: Summary of " + content.Substring(0, Math.Min(50, content.Length)) + "...";
-        }
+        // Diğer metodları da benzer şekilde güncelle
 
-        public async Task<List<string>> GenerateKeywordsAsync(string content, CancellationToken cancellationToken = default)
+        private async Task<string> SendCompletionRequestAsync(string prompt, CancellationToken cancellationToken = default)
         {
-            // Örnek anahtar kelimeler döndürüyoruz
-            return new List<string> { "sample", "keyword", "test" };
-        }
+            var requestBody = new
+            {
+                model = _model,
+                messages = new[]
+                {
+                new { role = "system", content = "You are a professional content writer and SEO expert." },
+                new { role = "user", content = prompt }
+            },
+                max_tokens = 500,
+                temperature = 0.7
+            };
 
-        public async Task<string> ImproveContentAsync(string content, CancellationToken cancellationToken = default)
-        {
-            // Örnek geliştirilmiş içerik döndürüyoruz
-            return "Improved: " + content;
-        }
+            var response = await _httpClient.PostAsJsonAsync("chat/completions", requestBody, cancellationToken);
+            response.EnsureSuccessStatusCode();
 
-        public async Task<string> GenerateImagePromptAsync(string content, CancellationToken cancellationToken = default)
-        {
-            // Örnek bir resim açıklaması döndürüyoruz
-            return "Create an image that represents: " + content.Substring(0, Math.Min(30, content.Length));
+            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+            using var document = JsonDocument.Parse(responseBody);
+
+            var choices = document.RootElement.GetProperty("choices");
+            var firstChoice = choices[0];
+            var message = firstChoice.GetProperty("message");
+            var content = message.GetProperty("content").GetString() ?? string.Empty;
+
+            return content.Trim();
         }
     }
 }

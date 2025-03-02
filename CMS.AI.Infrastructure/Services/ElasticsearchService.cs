@@ -1,6 +1,8 @@
 ﻿using CMS.AI.Application.Common.Interfaces;
 using CMS.AI.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,39 @@ namespace CMS.AI.Infrastructure.Services
     public class ElasticsearchService : ISearchService<Content>
     {
         private readonly IConfiguration _configuration;
+        private readonly IElasticClient _elasticClient;
+        private readonly ILogger<ElasticsearchService> _logger;
 
-        public ElasticsearchService(IConfiguration configuration)
+        public ElasticsearchService(IConfiguration configuration, ILogger<ElasticsearchService> logger)
         {
-            _configuration = configuration;
+            _logger = logger;
+            var url = configuration.GetConnectionString("Elasticsearch");
+            var settings = new ConnectionSettings(new Uri(url))
+                .DefaultIndex("contents")
+                .EnableDebugMode();
+
+            _elasticClient = new ElasticClient(settings);
+            CreateIndexIfNotExists();
+        }
+        private void CreateIndexIfNotExists()
+        {
+            if (!_elasticClient.Indices.Exists("contents").Exists)
+            {
+                var createIndexResponse = _elasticClient.Indices.Create("contents", c => c
+                    .Map<Content>(m => m
+                        .AutoMap()
+                        .Properties(p => p
+                            .Text(t => t.Name(n => n.Title).Analyzer("standard"))
+                            .Text(t => t.Name(n => n.Body).Analyzer("standard"))
+                        )
+                    )
+                );
+
+                if (!createIndexResponse.IsValid)
+                {
+                    _logger.LogError("Failed to create index: {Error}", createIndexResponse.DebugInformation);
+                }
+            }
         }
 
         public async Task<IReadOnlyCollection<Content>> SearchAsync(string query, int page = 1, int pageSize = 10, CancellationToken cancellationToken = default)

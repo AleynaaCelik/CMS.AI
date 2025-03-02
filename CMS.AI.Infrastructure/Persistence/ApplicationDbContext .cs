@@ -29,6 +29,8 @@ namespace CMS.AI.Infrastructure.Persistance
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            // Loglama eklenebilir
+            _logger.LogInformation("Database operation executed at {time}", DateTime.UtcNow);
             return await base.SaveChangesAsync(cancellationToken);
         }
     }
