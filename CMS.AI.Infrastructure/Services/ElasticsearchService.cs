@@ -30,11 +30,13 @@ namespace CMS.AI.Infrastructure.Services
         }
         private void CreateIndexIfNotExists()
         {
-            if (!_elasticClient.Indices.Exists("contents").Exists)
+            var indexExists = _elasticClient.Indices.Exists("contents").Exists;
+            if (!indexExists)
             {
+                // İndeks yoksa oluşturuyoruz
                 var createIndexResponse = _elasticClient.Indices.Create("contents", c => c
                     .Map<Content>(m => m
-                        .AutoMap()
+                        .AutoMap() // Tüm alanları otomatik olarak eşleştir
                         .Properties(p => p
                             .Text(t => t.Name(n => n.Title).Analyzer("standard"))
                             .Text(t => t.Name(n => n.Body).Analyzer("standard"))
