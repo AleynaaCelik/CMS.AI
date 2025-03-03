@@ -25,12 +25,23 @@ namespace CMS.AI.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Content>>> GetAll(CancellationToken cancellationToken)
         {
-            // Redis cache kullanarak içerikleri getir
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+
+            // Önce cache'ten verileri almayı deniyoruz
             var contents = await _cacheService.GetOrCreateAsync(
                 "all_contents",
-                async () => await _unitOfWork.Repository<Content>().GetAllAsync(),
+                async () => {
+                    // Cache miss durumunda veritabanından verileri getiriyoruz
+                    Console.WriteLine("Cache miss - getting data from database");
+                    return await _unitOfWork.Repository<Content>().GetAllAsync();
+                },
                 TimeSpan.FromMinutes(10),
-                cancellationToken);
+                cancellationToken
+            );
+
+            stopwatch.Stop();
+            Console.WriteLine($"GetAll operation completed in {stopwatch.ElapsedMilliseconds}ms");
 
             return Ok(contents);
         }
