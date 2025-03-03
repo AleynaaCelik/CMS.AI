@@ -14,6 +14,7 @@ namespace CMS.AI.Infrastructure.Services
         private readonly IDistributedCache _cache;
         private readonly JsonSerializerOptions _jsonOptions;
 
+
         public RedisCacheService(IDistributedCache cache)
         {
             _cache = cache;
