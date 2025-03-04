@@ -1,6 +1,7 @@
 ﻿using CMS.AI.Application.Common.Interfaces;
 using CMS.AI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,14 @@ namespace CMS.AI.Infrastructure.Persistance
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly ILogger<ApplicationDbContext> _logger;
+
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options,
+            ILogger<ApplicationDbContext> logger)
             : base(options)
         {
+            _logger = logger;
         }
 
         public DbSet<Content> Contents { get; set; } = null!;
@@ -34,5 +40,4 @@ namespace CMS.AI.Infrastructure.Persistance
             return await base.SaveChangesAsync(cancellationToken);
         }
     }
-
 }
