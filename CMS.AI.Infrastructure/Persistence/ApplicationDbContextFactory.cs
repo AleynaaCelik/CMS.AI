@@ -2,6 +2,8 @@
 using CMS.AI.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CMS.AI.Infrastructure.Persistence
 {
@@ -16,7 +18,10 @@ namespace CMS.AI.Infrastructure.Persistence
 
             optionsBuilder.UseSqlServer(connectionString);
 
-            return new ApplicationDbContext(optionsBuilder.Options);
+            // NullLogger kullanarak logger geçiyoruz (design-time için)
+            var logger = NullLoggerFactory.Instance.CreateLogger<ApplicationDbContext>();
+
+            return new ApplicationDbContext(optionsBuilder.Options, logger);
         }
     }
 }
