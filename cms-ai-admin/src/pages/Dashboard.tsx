@@ -1,30 +1,19 @@
 import React from 'react';
-import { useQuery } from 'react-query';
 import { 
   Typography, 
   Grid, 
   Paper, 
-  Box, 
-  Card, 
-  CardContent, 
-  CardActionArea,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  CircularProgress
+  Box,
+  Card,
+  CardContent,
+  CardActionArea
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import ArticleIcon from '@mui/icons-material/Article';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
-import { contentService } from '../api/contentService';
 
 const Dashboard: React.FC = () => {
-  const { data: contents, isLoading } = useQuery('dashboardContents', () => 
-    contentService.getAll().then(data => data.slice(0, 5))
-  );
-
   return (
     <>
       <Typography variant="h4" gutterBottom>Dashboard</Typography>
@@ -81,37 +70,9 @@ const Dashboard: React.FC = () => {
       
       <Paper sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>Recent Content</Typography>
-        <Divider sx={{ mb: 2 }} />
-        
-        {isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <List>
-            {contents?.map((content) => (
-              <ListItem 
-                key={content.id} 
-                button 
-                component={Link} 
-                to={`/content/${content.id}`}
-                divider
-              >
-                <ListItemText 
-                  primary={content.title} 
-                  secondary={`Last modified: ${new Date(
-                    content.lastModifiedAt || content.createdAt
-                  ).toLocaleDateString()}`} 
-                />
-              </ListItem>
-            ))}
-            {(!contents || contents.length === 0) && (
-              <ListItem>
-                <ListItemText primary="No content found" />
-              </ListItem>
-            )}
-          </List>
-        )}
+        <Typography variant="body1">
+          No recent content to display.
+        </Typography>
       </Paper>
     </>
   );

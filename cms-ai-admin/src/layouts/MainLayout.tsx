@@ -1,6 +1,9 @@
 import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Container } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Box, AppBar, Toolbar, Typography, Drawer, List, Divider, Container } from '@mui/material';
+import { Link as RouterLink, Outlet } from 'react-router-dom';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ArticleIcon from '@mui/icons-material/Article';
 import SearchIcon from '@mui/icons-material/Search';
@@ -29,19 +32,19 @@ const MainLayout: React.FC = () => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            <ListItem button component={Link} to="/">
+            <ListItem button component={RouterLink} to="/">
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button component={Link} to="/content">
+            <ListItem button component={RouterLink} to="/content">
               <ListItemIcon>
                 <ArticleIcon />
               </ListItemIcon>
               <ListItemText primary="Content" />
             </ListItem>
-            <ListItem button component={Link} to="/search">
+            <ListItem button component={RouterLink} to="/search">
               <ListItemIcon>
                 <SearchIcon />
               </ListItemIcon>
@@ -50,7 +53,7 @@ const MainLayout: React.FC = () => {
           </List>
           <Divider />
           <List>
-            <ListItem button component={Link} to="/settings">
+            <ListItem button component={RouterLink} to="/settings">
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
