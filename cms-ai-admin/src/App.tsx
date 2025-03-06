@@ -1,25 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import MainLayout from './layouts/MainLayout';
+import Dashboard from './pages/Dashboard';
+import ContentList from './pages/content/ContentList';
+import ContentDetail from './pages/content/ContentDetail';
+import ContentCreate from './pages/content/ContentCreate';
+import ContentEdit from './pages/content/ContentEdit';
+import SearchPage from './pages/SearchPage';
+import SettingsPage from './pages/SettingsPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="content" element={<ContentList />} />
+            <Route path="content/create" element={<ContentCreate />} />
+            <Route path="content/:id" element={<ContentDetail />} />
+            <Route path="content/:id/edit" element={<ContentEdit />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 
