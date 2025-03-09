@@ -8,6 +8,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ArticleIcon from '@mui/icons-material/Article';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { ListItemButton } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -32,33 +33,33 @@ const MainLayout: React.FC = () => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            <ListItem button component={RouterLink} to="/">
+            <ListItemButton component={RouterLink} to="/">
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
-            </ListItem>
-            <ListItem button component={RouterLink} to="/content">
+            </ListItemButton>
+            <ListItemButton component={RouterLink} to="/content">
               <ListItemIcon>
                 <ArticleIcon />
               </ListItemIcon>
               <ListItemText primary="Content" />
-            </ListItem>
-            <ListItem button component={RouterLink} to="/search">
+            </ListItemButton>
+            <ListItemButton component={RouterLink} to="/search">
               <ListItemIcon>
                 <SearchIcon />
               </ListItemIcon>
               <ListItemText primary="Search" />
-            </ListItem>
+            </ListItemButton>
           </List>
           <Divider />
           <List>
-            <ListItem button component={RouterLink} to="/settings">
+            <ListItemButton component={RouterLink} to="/settings">
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
               <ListItemText primary="Settings" />
-            </ListItem>
+            </ListItemButton>
           </List>
         </Box>
       </Drawer>
