@@ -6,12 +6,6 @@ using CMS.AI.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace CMS.AI.Infrastructure
 {
@@ -22,13 +16,13 @@ namespace CMS.AI.Infrastructure
              IConfiguration configuration)
         {
             // Database
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<CMS.AI.Infrastructure.Persistance.ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                    b => b.MigrationsAssembly(typeof(CMS.AI.Infrastructure.Persistance.ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext>(provider =>
-                provider.GetRequiredService<ApplicationDbContext>());
+                (IApplicationDbContext)provider.GetRequiredService<CMS.AI.Infrastructure.Persistance.ApplicationDbContext>());
 
             // Redis Cache
             services.AddStackExchangeRedisCache(options =>
@@ -36,7 +30,6 @@ namespace CMS.AI.Infrastructure
                 options.Configuration = configuration.GetConnectionString("Redis");
                 options.InstanceName = "CMS.AI:";
             });
-
             services.AddSingleton<ICacheService, RedisCacheService>();
 
             // HttpClient Factory
@@ -57,7 +50,5 @@ namespace CMS.AI.Infrastructure
 
             return services;
         }
-
-
     }
 }
