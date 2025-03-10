@@ -8,11 +8,11 @@ namespace CMS.AI.Domain.Common
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid(); // Varsayılan değer atama
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Varsayılan değer
-        public string CreatedBy { get; set; } = "System"; // Varsayılan değer
-        public DateTime LastModifiedAt { get; set; } = DateTime.UtcNow; // Varsayılan değer
-        public string LastModifiedBy { get; set; } = "System"; // Varsayılan değer
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string CreatedBy { get; set; } = "System";
+        public DateTime LastModifiedAt { get; set; } = DateTime.UtcNow;
+        public string LastModifiedBy { get; set; } = "System";
     }
 
 }

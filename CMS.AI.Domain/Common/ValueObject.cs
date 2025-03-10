@@ -14,12 +14,18 @@ namespace CMS.AI.Domain.Common
             {
                 return false;
             }
+
             return left?.Equals(right) != false;
+        }
+
+        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+        {
+            return !EqualOperator(left, right);
         }
 
         protected abstract IEnumerable<object> GetEqualityComponents();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != GetType())
             {
@@ -27,6 +33,7 @@ namespace CMS.AI.Domain.Common
             }
 
             var other = (ValueObject)obj;
+
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
