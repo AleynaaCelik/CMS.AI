@@ -3,13 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
+// QueryClient oluştur
+const queryClient = new QueryClient();
+
+// React 18 API'si ile root oluştur
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+// Root üzerinde render işlemini yap
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
