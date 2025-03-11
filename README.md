@@ -128,11 +128,12 @@ MIT
 ![front](https://github.com/user-attachments/assets/478634e0-65db-4f0f-9b10-169898aca20f)
 
 
-
-
 ![WhatsApp Görsel 2025-03-04 saat 23 25 49_e9396d3b](https://github.com/user-attachments/assets/d26b2538-008f-4ba7-bdd2-6dd5ba5f9c25)
 
 ![search](https://github.com/user-attachments/assets/09abe87f-ce59-4541-ae12-95774165240b)
+
+![add-content](https://github.com/user-attachments/assets/cf2ff3bc-6d83-4ee6-9f84-aec373171819)
+
 
 
 
